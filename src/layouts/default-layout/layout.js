@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './header';
 import {AppBar} from '@material-ui/core';
+import Container from '@material-ui/core/Container';
 
 /**
  * Default layout
@@ -9,11 +10,13 @@ import {AppBar} from '@material-ui/core';
  */
 function defaultLayout({children}) {
   return (
-    <div className="app-main">
+    <div>
       <AppBar position="static">
-        <Header />
+        <Header/>
       </AppBar>
-      <div className="main-content">{children}</div>
+      <Container maxWidth="xs">
+        {children}
+      </Container>
     </div>
   );
 }
