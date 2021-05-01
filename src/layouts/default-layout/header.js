@@ -1,4 +1,6 @@
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar';
 
 /**
  * Header of default layout
@@ -7,9 +9,9 @@ import React from 'react';
  */
 function Header() {
   return (
-    <div>
-      Header
-    </div>
+    <Toolbar>
+      <Typography variant="h6">Company Name</Typography>
+    </Toolbar>
   );
 }
 
