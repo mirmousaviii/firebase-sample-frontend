@@ -5,10 +5,12 @@ import TextField from '@material-ui/core/TextField';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import {Box, Card, CardContent, CardHeader} from '@material-ui/core';
+import { useHistory } from "react-router-dom";
 
 const LoginForm = (props) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const history = useHistory();
 
   React.useEffect(() => {
     const firebaseConfig = {
@@ -35,13 +37,15 @@ const LoginForm = (props) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        props.history.push('/');
-        // console.log('then', userCredential);
+        // TODO: make and use a middleware for manage storage
+        // console.log(userCredential.user);
+        localStorage.setItem("refresh-token", userCredential.user.refreshToken);
+        history.push('/orders');
       })
       .catch((error) => {
         // TODO: Make and use notification component
-        alert(error.message);
         // console.log('then', userCredential);
+        alert(error.message);
       });
   };
 

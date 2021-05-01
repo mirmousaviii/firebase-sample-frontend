@@ -1,19 +1,27 @@
 import LoginPage from "../pages/login";
 import HomePage from '../pages/home';
+import OrderPage from '../pages/orders';
 
 export const paths = [
   {
     key: 1,
-    path: ["/"],
+    path: "/",
     component: HomePage,
     exact: true,
     private: false,
   },
   {
-    key: 1,
-    path: ["/login"],
+    key: 2,
+    path: "/login",
     component: LoginPage,
-    exact: true,
+    exact: false,
     private: false,
+  },
+  {
+    key: 3,
+    path: "/orders",
+    component: OrderPage,
+    exact: false,
+    private: true,
   },
 ];
