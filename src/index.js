@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import RoutesDumb from './routes/routes-dumb';
+import AppRoute from './routes';
 
 ReactDOM.render(
   <React.StrictMode>
-    <RoutesDumb/>
+    <AppRoute/>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import DefaultLayout from '../../layouts/default-layout';
 
-function Home() {
+function HomePage() {
   return (
-    <>
-      <p>Home - <Link to='/login'>login</Link></p>
-    </>
+    <DefaultLayout>
+      <p>You can <Link to='/login'>login</Link> and use the application.</p>
+    </DefaultLayout>
   );
 }
 
-export default Home;
+export default HomePage;

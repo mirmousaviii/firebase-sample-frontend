@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container';
  * @param  {children} Children
  * @return {JSX.Element}
  */
-function defaultLayout({children}) {
+function LoginLayout({children}) {
   return (
     <div>
       <AppBar position="static">
@@ -21,4 +21,4 @@ function defaultLayout({children}) {
   );
 }
 
-export default defaultLayout;
+export default LoginLayout;
