@@ -7,6 +7,7 @@ function LoginPage() {
     <LoginLayout>
       <LoginForm/>
       {/* TODO: Add link of signup and forget password*/}
+      {/* TODO: Handle logout*/}
     </LoginLayout>
 
   );
