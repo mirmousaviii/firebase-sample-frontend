@@ -1,52 +1,71 @@
-import React from 'react';
+import React, {useState} from 'react';
 import DefaultLayout from '../../layouts/default-layout';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import {db, firebaseConfig} from '../../utils/firebase';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@material-ui/core';
+import {Link} from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 function OrderPage() {
+  const [orders, setOrders] = useState([]);
 
   React.useEffect(() => {
-    const firebaseConfig = {
-      apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
-      authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-      databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-      projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-      storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.REACT_APP_FIREBASE_APP_ID,
-    };
-
-    // Initialize Firebase
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    } else {
-      firebase.app();
-    }
-
     loadOrders();
-
   }, []);
 
   const loadOrders = () => {
-    // firebase
-    //     .auth()
-        // .signInWithEmailAndPassword(email, password)
-        // .then((userCredential) => {
-        //   // TODO: make and use a middleware for manage storage
-        //   // console.log(userCredential.user);
-        //   localStorage.setItem("refresh-token", userCredential.user.refreshToken);
-        //   // history.push('/orders');
-        // })
-        // .catch((error) => {
-        //   // TODO: Make and use notification component
-        //   // console.log('then', userCredential);
-        //   alert(error.message);
-        // });
+    db.collection('orders')
+      .get()
+      .then((querySnapshot) => {
+        let ordersLoaded = [];
+        querySnapshot.forEach((doc) => {
+          ordersLoaded.push(doc.data());
+        });
+        setOrders(ordersLoaded);
+      }).catch((error) => {
+      // console.log(error);
+      alert(error.message);
+    });
+
   };
 
   return (
-    <DefaultLayout>
-      <p>Order page</p>
-    </DefaultLayout>
+      <DefaultLayout>
+        <Typography variant="h6">
+          Order list:
+        </Typography>
+        <TableContainer>
+          <Table aria-label="Orders table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Title</TableCell>
+                <TableCell>Booking Date</TableCell>
+                <TableCell>Address</TableCell>
+                <TableCell>Customer</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {orders.map((item) => (
+                  <TableRow key={item?.id}>
+                    <TableCell><Link
+                        to={'orders'}>{item.title}</Link></TableCell>
+                    <TableCell>{item?.bookingDate}</TableCell>
+                    <TableCell>{item?.address?.street}</TableCell>
+                    <TableCell>{item?.customer?.name}</TableCell>
+                  </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </DefaultLayout>
   );
 }
 
