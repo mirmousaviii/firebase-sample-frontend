@@ -21,13 +21,36 @@ function OrderPage() {
     loadOrders();
   }, []);
 
+  let orderConverter = {
+    fromFirestore: (snapshot, options) => {
+      const data = snapshot.data(options);
+      const bookingDate = new Date(data?.bookingDate);
+      let formattedBookingDate;
+      if (bookingDate.toString() !== 'Invalid Date') {
+        formattedBookingDate = bookingDate.getDate() + '.' +
+            bookingDate.getDate() + '.' +
+            bookingDate.getFullYear();
+      }
+
+      return {
+        uid: data?.uid,
+        title: data?.title || '[NO TITLE]',
+        bookingDate: formattedBookingDate || '-',
+        address: data?.address?.street || '-',
+        customer: data?.customer?.name || '-',
+      };
+    },
+  };
+
   const loadOrders = () => {
     db.collection('orders')
+      .withConverter(orderConverter)
       .get()
       .then((querySnapshot) => {
         let ordersLoaded = [];
         querySnapshot.forEach((doc) => {
           ordersLoaded.push(doc.data());
+          // console.log(ordersLoaded);
         });
         setOrders(ordersLoaded);
       }).catch((error) => {
@@ -53,13 +76,13 @@ function OrderPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((item) => (
-                  <TableRow key={item?.id}>
-                    <TableCell><Link
-                        to={'orders'}>{item.title}</Link></TableCell>
-                    <TableCell>{item?.bookingDate}</TableCell>
-                    <TableCell>{item?.address?.street}</TableCell>
-                    <TableCell>{item?.customer?.name}</TableCell>
+              {orders.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell><Link to={'orders/' +
+                    item.uid}>{item.title}</Link></TableCell>
+                    <TableCell>{item.bookingDate}</TableCell>
+                    <TableCell>{item.address}</TableCell>
+                    <TableCell>{item.customer}</TableCell>
                   </TableRow>
               ))}
             </TableBody>
