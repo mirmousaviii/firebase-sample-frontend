@@ -24,21 +24,23 @@ function OrderPage() {
   let orderConverter = {
     fromFirestore: (snapshot, options) => {
       const data = snapshot.data(options);
-      const bookingDate = new Date(data?.bookingDate);
-      let formattedBookingDate;
-      if (bookingDate.toString() !== 'Invalid Date') {
-        formattedBookingDate = bookingDate.getDate() + '.' +
-            bookingDate.getDate() + '.' +
-            bookingDate.getFullYear();
-      }
+      if (Object.keys(data).length) {
+        const bookingDate = new Date(data?.bookingDate);
+        let formattedBookingDate;
+        if (bookingDate.toString() !== 'Invalid Date') {
+          formattedBookingDate = bookingDate.getDate() + '.' +
+              bookingDate.getDate() + '.' +
+              bookingDate.getFullYear();
+        }
 
-      return {
-        uid: data?.uid,
-        title: data?.title || '[NO TITLE]',
-        bookingDate: formattedBookingDate || '-',
-        address: data?.address?.street || '-',
-        customer: data?.customer?.name || '-',
-      };
+        return {
+          id: snapshot.id,
+          title: data?.title || '[NO TITLE]',
+          bookingDate: formattedBookingDate || '-',
+          address: data?.address?.street || '-',
+          customer: data?.customer?.name || '-',
+        };
+      }
     },
   };
 
@@ -49,8 +51,9 @@ function OrderPage() {
       .then((querySnapshot) => {
         let ordersLoaded = [];
         querySnapshot.forEach((doc) => {
-          ordersLoaded.push(doc.data());
-          // console.log(ordersLoaded);
+          if (doc.data()) {
+            ordersLoaded.push(doc.data());
+          }
         });
         setOrders(ordersLoaded);
       }).catch((error) => {
@@ -66,7 +69,7 @@ function OrderPage() {
           Order list:
         </Typography>
         <TableContainer>
-          <Table aria-label="Orders table">
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell>Title</TableCell>
@@ -78,8 +81,11 @@ function OrderPage() {
             <TableBody>
               {orders.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell><Link to={'orders/' +
-                    item.uid}>{item.title}</Link></TableCell>
+                    <TableCell>
+                      <Link to={'orders/' + item.id}>
+                        {item.title}
+                      </Link>
+                    </TableCell>
                     <TableCell>{item.bookingDate}</TableCell>
                     <TableCell>{item.address}</TableCell>
                     <TableCell>{item.customer}</TableCell>
