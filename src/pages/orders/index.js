@@ -82,7 +82,7 @@ function OrderPage() {
               {orders.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell>
-                      <Link to={'orders/' + item.id}>
+                      <Link to={item.id}>
                         {item.title}
                       </Link>
                     </TableCell>
