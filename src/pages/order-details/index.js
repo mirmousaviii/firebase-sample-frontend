@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import DefaultLayout from '../../layouts/default-layout';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import {db, firebaseConfig} from '../../utils/firebase';
 import {
@@ -9,13 +8,19 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
+  TableRow, TextField,
 } from '@material-ui/core';
-import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import MuiButton from '@material-ui/core/Button';
+import {styled} from '@material-ui/core/styles';
+import {spacing} from '@material-ui/system';
+
+const Button = styled(MuiButton)(spacing);
 
 function OrderDetailPage({match}) {
   const [order, setOrder] = useState({});
+  const [title, setTitle] = useState('');
+  const [bookingDate, setBookingDate] = useState('');
 
   React.useEffect(() => {
     loadOrderDetails();
@@ -26,9 +31,29 @@ function OrderDetailPage({match}) {
       .doc(match.params.id)
       .get()
       .then((doc) => {
-        setOrder(doc.data());
+        const data = doc.data();
+        setOrder(data);
+        setTitle(data?.title);
+        const formattedDate = new Date(data?.bookingDate)
+            .toISOString()
+            .slice(0, 19);
+        setBookingDate(formattedDate);
       }).catch((error) => {
       // console.log(error);
+      alert(error.message);
+    });
+  };
+
+  const updateOrder = () => {
+    db.collection('orders')
+      .doc(match.params.id).set(
+        {
+          title,
+          bookingDate: new Date(bookingDate).getTime(),
+        },
+    ).then(() => {
+      alert('Order Updated.');
+    }).catch((error) => {
       alert(error.message);
     });
 
@@ -44,11 +69,23 @@ function OrderDetailPage({match}) {
             <TableBody>
               <TableRow>
                 <TableCell>Title</TableCell>
-                <TableCell>{order?.title}</TableCell>
+                <TableCell>
+                  <TextField
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                  />
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Booking Date</TableCell>
-                <TableCell>{order?.bookingDate}</TableCell>
+                <TableCell>
+                  <TextField
+                      type="datetime-local"
+                      value={bookingDate}
+                      onChange={(e) => setBookingDate(e.target.value)}
+                  />
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Address</TableCell>
@@ -70,6 +107,15 @@ function OrderDetailPage({match}) {
             </TableBody>
           </Table>
         </TableContainer>
+        <br/>
+        <Button variant="contained"
+                color="primary"
+                size="large"
+                mt={2}
+                onClick={updateOrder}
+        >
+          Update order
+        </Button>
       </DefaultLayout>
   );
 }
