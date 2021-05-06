@@ -4,7 +4,7 @@ import {AppBar} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 
 /**
- * Default layout
+ * Default layout (JUST FOR TEST MULTI LAYOUT)
  * @param  {children} Children
  * @return {JSX.Element}
  */

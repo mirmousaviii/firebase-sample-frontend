@@ -28,7 +28,7 @@ function HomePage() {
           <ListItem><Link to="/">Home page</Link></ListItem>
           <ListItem><Link to="/login">Login</Link></ListItem>
           <ListItem><Link to="/orders">Orders</Link></ListItem>
-          <ListItem><Link to="/orders/10">Order details</Link></ListItem>
+          <ListItem><Link to="/orders/3bo5v0iJ4i732XwUIKR3">Order details</Link></ListItem>
         </List>
       </DefaultLayout>
   );

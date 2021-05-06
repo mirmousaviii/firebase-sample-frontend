@@ -23,6 +23,7 @@ const LoginForm = () => {
               let user = doc.data();
               // TODO: Use state manager
               // TODO: make and use a middleware for manage storage
+              // Just for test as a get user
               localStorage.setItem('user_uid', user.uid);
               localStorage.setItem('user_name', user.name);
 

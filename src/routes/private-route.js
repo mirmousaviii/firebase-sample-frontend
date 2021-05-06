@@ -1,10 +1,8 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import {auth} from '../utils/firebase';
 
 export const PrivateRoute = (props) => {
-  // TODO: Use state manager
-  // TODO: make and use a middleware for manage storage
-  const token = localStorage.getItem("user_uid");
-
-  return token ? <Route {...props} /> : <Redirect to="/login" />;
+  let user = auth.currentUser;
+  return user ? <Route {...props} /> : <Redirect to="/login" />;
 };
