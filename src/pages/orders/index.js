@@ -1,18 +1,9 @@
 import React, {useState} from 'react';
 import DefaultLayout from '../../layouts/default-layout';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import {db, firebaseConfig} from '../../utils/firebase';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@material-ui/core';
-import {Link} from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import OrdersTable from '../../components/orders-table';
 
 function OrderPage() {
   const [orders, setOrders] = useState([]);
@@ -68,32 +59,7 @@ function OrderPage() {
         <Typography variant="h6">
           Order list:
         </Typography>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Title</TableCell>
-                <TableCell>Booking Date</TableCell>
-                <TableCell>Address</TableCell>
-                <TableCell>Customer</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      <Link to={`orders/${item.id}`}>
-                        {item.title}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{item.bookingDate}</TableCell>
-                    <TableCell>{item.address}</TableCell>
-                    <TableCell>{item.customer}</TableCell>
-                  </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <OrdersTable ordersData={orders} />
       </DefaultLayout>
   );
 }
