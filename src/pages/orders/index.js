@@ -15,7 +15,7 @@ function OrderPage() {
   let orderConverter = {
     fromFirestore: (snapshot, options) => {
       const data = snapshot.data(options);
-      if (Object.keys(data).length) {
+      if (Object.keys(data).length && snapshot.id.trim()) {
         const bookingDate = new Date(data?.bookingDate);
         let formattedBookingDate;
         if (bookingDate.toString() !== 'Invalid Date') {
