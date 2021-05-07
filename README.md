@@ -1,6 +1,5 @@
-# Getting Started with Create React App
-Display data in a line chart
-
+# firebase-sample-frontend
+A sample code for login and manage data by firebase
 
 ## Available Scripts
 
