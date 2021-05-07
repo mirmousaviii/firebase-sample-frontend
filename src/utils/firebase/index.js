@@ -1,7 +1,7 @@
-import firebase from "firebase/app";
+import firebase from 'firebase/app';
 import firebaseConfig from './config';
-require('firebase/auth')
-require('firebase/firestore')
+import 'firebase/auth';
+import 'firebase/firestore';
 
 // Initialize Firebase
 let app;
